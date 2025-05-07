@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project 6 | Chris Ritter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
+    <style>
+      .btn {
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-inverse">
+        <div class="navbar-header">
+          <a href="#" class="navbar-brand">Our Website</a>
+        </div>
+        <div>
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="index.html">All Tickets</a>
+            </li>
+            <li>
+              <a href="25over.html">25MPH or More Over</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <h2>Tickets: July 4, 2014: Minneapolis/St. Paul</h2>
+
+      <div id="speedingTicketApp">
+        <table class="table table-bordered table-striped">
+          <tr>
+            <th>Ticket ID</th>
+            <th>Time</th>
+            <th>Speed</th>
+            <th>Posted Speed</th>
+            <th>MPH Over</th>
+            <th>Age</th>
+            <th>Violater Sex</th>
+          </tr>
+          <tr v-for="ticket in citations">
+            <td>{{ticket.tid}}</td>
+            <td>{{ticket.stop_time}}</td>
+            <td>{{ticket.actual_speed}}</td>
+            <td>{{ticket.posted_speed}}</td>
+            <td>{{ticket.actual_speed - ticket.posted_speed}}</td>
+            <td>{{ticket.age}}</td>
+            <td>{{ticket.violator_sex}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Vue app start -->
+    <script>
+      let app = Vue.createApp({
+        data() {
+          // returns a data object
+          return {
+            citations: [], // array that holds citation data from the json file
+          };
+        },
+        created() {
+          this.getData();
+        },
+        methods: {
+          // ajax request that grabs data from the json file
+          async getData() {
+            const response = await fetch('tickets1.json');
+            this.citations = await response.json();
+          },
+        },
+      });
+      app.mount('#speedingTicketApp'); // populates the div with data from the json file
+    </script>
+  </body>
+</html>
